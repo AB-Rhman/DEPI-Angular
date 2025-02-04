@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+      - name: backend
+        image: abrhman/depi-web:backend
+        ports:
+        - containerPort: 3000
+        env:
+        - name: MYSQL_HOST
+          value: db
+        - name: MYSQL_USER
+          value: root
+        - name: MYSQL_PASSWORD
+          value: rootpassword
+        - name: MYSQL_DATABASE
+          value: angular
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend
+spec:
+  selector:
+    app: backend
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000
