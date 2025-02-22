@@ -1,4 +1,4 @@
-FROM node:18 as build-stage
+FROM node:18-alpine AS build-stage
 
 WORKDIR /app
 
@@ -8,9 +8,9 @@ RUN npm install
 
 COPY . .
 
-RUN npm run build -- --configuration production
+RUN npm install -g @angular/cli && ng build --configuration production
 
-FROM nginx:alpine
+FROM nginx:stable-alpine-slim
 
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
